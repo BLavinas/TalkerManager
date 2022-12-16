@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
+const crypto = require('crypto');
 
 const TALKER_DATA_PATH = './src/talker.json';
 
@@ -23,7 +24,10 @@ const readTalkerById = async (id) => {
   }
 };
 
+const loginToken = () => crypto.randomBytes(8).toString('hex');
+
 module.exports = {
   readTalkerData,
   readTalkerById,
+  loginToken,
 };
