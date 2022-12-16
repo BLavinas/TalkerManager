@@ -1,4 +1,5 @@
 const express = require('express');
+const { validateLogin } = require('./middlewares/validateLogin');
 const { readTalkerData, readTalkerById, loginToken } = require('./utils/talkerUtils');
 
 const app = express();
@@ -34,7 +35,7 @@ app.get('/talker/:id', async (req, res) => {
   return res.status(200).json(talkerById);
 });
 
-app.post('/login', (_req, res) => {
+app.post('/login', validateLogin, (_req, res) => {
   const token = loginToken();
   return res.status(200).json({ token });
 });
