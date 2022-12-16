@@ -1,5 +1,5 @@
 const express = require('express');
-const { readTalkerData } = require('./utils/talkerUtils');
+const { readTalkerData, readTalkerById } = require('./utils/talkerUtils');
 
 const app = express();
 app.use(express.json());
@@ -22,4 +22,14 @@ if (!registeredTalkers) {
   return res.status(200).json([]);
 }
 return res.status(200).json(registeredTalkers);
+});
+
+app.get('/talker/:id', async (req, res) => {
+  const { id } = req.params;
+  const talkerById = await readTalkerById(id);
+
+  if (!talkerById) {
+    return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+  }
+  return res.status(200).json(talkerById);
 });

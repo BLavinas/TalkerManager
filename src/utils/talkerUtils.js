@@ -9,10 +9,21 @@ const readTalkerData = async () => {
     const talkerData = JSON.parse(data);
     return talkerData;
   } catch (error) {
-    console.log('Can`t read the file');
+    console.log('Cant read the file');
+  }
+};
+
+const readTalkerById = async (id) => {
+  try {
+    const data = await readTalkerData();
+    const talkerById = data.find((talker) => talker.id === Number(id));
+    return talkerById;
+  } catch (error) {
+    console.log('Cant find talker');
   }
 };
 
 module.exports = {
   readTalkerData,
+  readTalkerById,
 };
