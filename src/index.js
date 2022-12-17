@@ -6,6 +6,7 @@ const {
   readTalkerById,
   loginToken,
   writeNewTalker,
+  updateTalker,
 } = require('./utils/talkerUtils');
 
 const app = express();
@@ -50,4 +51,11 @@ app.post('/talker', validateTalker, async (req, res) => {
   const newTalker = req.body;
   const newTalkerWithID = await writeNewTalker(newTalker);
   return res.status(201).json(newTalkerWithID);
+});
+
+app.put('/talker/:id', validateTalker, async (req, res) => {
+const talkerChanges = req.body;
+const { id } = req.params;
+const updatedTalker = await updateTalker(Number(id), talkerChanges);
+return res.status(200).json(updatedTalker);
 });

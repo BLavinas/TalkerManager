@@ -39,9 +39,23 @@ const writeNewTalker = async (newTalker) => {
   }
 };
 
+const updateTalker = async (id, talkerChange) => {
+  try {
+    const currentTalkers = await readTalkerData();
+    const talkers = currentTalkers.filter((talker) => talker.id !== Number(id));
+    const changedTalkerObj = { id, ...talkerChange };
+    const allTalkers = JSON.stringify([...talkers, changedTalkerObj], null, 2);
+    fs.writeFile(path.resolve((__dirname, TALKER_DATA_PATH)), allTalkers);
+    return changedTalkerObj;
+  } catch (error) {
+    console.log(`Error writing file: ${error}`);
+  }
+};
+
 module.exports = {
   readTalkerData,
   readTalkerById,
   loginToken,
   writeNewTalker,
+  updateTalker,
 };
