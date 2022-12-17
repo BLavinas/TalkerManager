@@ -10,7 +10,7 @@ const readTalkerData = async () => {
     const talkerData = JSON.parse(data);
     return talkerData;
   } catch (error) {
-    console.log('Cant read the file');
+    console.log(`Error reading file: ${error}`);
   }
 };
 
@@ -20,14 +20,28 @@ const readTalkerById = async (id) => {
     const talkerById = data.find((talker) => talker.id === Number(id));
     return talkerById;
   } catch (error) {
-    console.log('Cant find talker');
+    console.log(`Error reading file: ${error}`);
   }
 };
 
 const loginToken = () => crypto.randomBytes(8).toString('hex');
 
+const writeNewTalker = async (newTalker) => {
+  try {
+    const dataTalkers = await readTalkerData();
+    const idNewTalker = dataTalkers.length + 1;
+    const newTalkerObj = { id: idNewTalker, ...newTalker };
+    const allTalkers = JSON.stringify([...dataTalkers, newTalkerObj], null, 2);
+    fs.writeFile(path.resolve((__dirname, TALKER_DATA_PATH)), allTalkers);
+    return newTalkerObj;
+  } catch (error) {
+    console.log(`Error writing file: ${error}`);
+  }
+};
+
 module.exports = {
   readTalkerData,
   readTalkerById,
   loginToken,
+  writeNewTalker,
 };

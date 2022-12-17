@@ -1,6 +1,12 @@
 const express = require('express');
 const { validateLogin } = require('./middlewares/validateLogin');
-const { readTalkerData, readTalkerById, loginToken } = require('./utils/talkerUtils');
+const { validateTalker } = require('./middlewares/validateTalker');
+const {
+  readTalkerData,
+  readTalkerById,
+  loginToken,
+  writeNewTalker,
+} = require('./utils/talkerUtils');
 
 const app = express();
 app.use(express.json());
@@ -38,4 +44,10 @@ app.get('/talker/:id', async (req, res) => {
 app.post('/login', validateLogin, (_req, res) => {
   const token = loginToken();
   return res.status(200).json({ token });
+});
+
+app.post('/talker', validateTalker, async (req, res) => {
+  const newTalker = req.body;
+  const newTalkerWithID = await writeNewTalker(newTalker);
+  return res.status(201).json(newTalkerWithID);
 });
