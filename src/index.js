@@ -1,12 +1,13 @@
 const express = require('express');
 const { validateLogin } = require('./middlewares/validateLogin');
-const { validateTalker } = require('./middlewares/validateTalker');
+const { validateTalker, validateTokenToDelete } = require('./middlewares/validateTalker');
 const {
   readTalkerData,
   readTalkerById,
   loginToken,
   writeNewTalker,
   updateTalker,
+  deleteTalker,
 } = require('./utils/talkerUtils');
 
 const app = express();
@@ -58,4 +59,10 @@ const talkerChanges = req.body;
 const { id } = req.params;
 const updatedTalker = await updateTalker(Number(id), talkerChanges);
 return res.status(200).json(updatedTalker);
+});
+
+app.delete('/talker/:id', validateTokenToDelete, async (req, res) => {
+const { id } = req.params;
+deleteTalker(id);
+return res.status(204).end();
 });

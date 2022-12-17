@@ -52,10 +52,23 @@ const updateTalker = async (id, talkerChange) => {
   }
 };
 
+const deleteTalker = async (id) => {
+  const currentTalkers = await readTalkerData();
+  const updatedTalkers = currentTalkers.filter((talker) => talker.id !== Number(id));
+  const talkers = JSON.stringify(updatedTalkers, null, 2);
+  try {
+    await fs.writeFile(path.resolve((__dirname, TALKER_DATA_PATH)), talkers);
+    return talkers;
+  } catch (error) {
+    console.log(`Error deleting file: ${error}`);
+  }
+};
+
 module.exports = {
   readTalkerData,
   readTalkerById,
   loginToken,
   writeNewTalker,
   updateTalker,
+  deleteTalker,
 };
