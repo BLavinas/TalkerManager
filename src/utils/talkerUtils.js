@@ -64,6 +64,14 @@ const deleteTalker = async (id) => {
   }
 };
 
+const getByQuery = async (query, res) => {
+  const allTalkers = await readTalkerData();
+  const talkerByQuery = allTalkers.filter((talker) => talker.name.includes(query));
+  if (!query) return res.status(200).json(allTalkers);
+  if (!talkerByQuery) return res.status(200).json([]);
+  return res.status(200).json(talkerByQuery);
+};
+
 module.exports = {
   readTalkerData,
   readTalkerById,
@@ -71,4 +79,5 @@ module.exports = {
   writeNewTalker,
   updateTalker,
   deleteTalker,
+  getByQuery,
 };

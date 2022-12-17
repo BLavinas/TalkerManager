@@ -8,6 +8,7 @@ const {
   writeNewTalker,
   updateTalker,
   deleteTalker,
+  getByQuery,
 } = require('./utils/talkerUtils');
 
 const app = express();
@@ -23,6 +24,12 @@ app.get('/', (_request, response) => {
 
 app.listen(PORT, () => {
   console.log('Online');
+});
+
+app.get('/talker/search', validateTokenToDelete, async (req, res) => {
+const { q } = req.query;
+const result = await getByQuery(q, res);
+return result;
 });
 
 app.get('/talker', async (_req, res) => {

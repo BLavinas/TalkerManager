@@ -58,10 +58,8 @@ const validateTalker = (req, res, next) => validateToken(req, res)
   || validateName(req, res) || validateAge(req, res)
 || validateTalk(req, res) || next();
 
-const validateTokenToDelete = (req, res, next) => {
-  validateToken(req, res);
-  next();
-};
+const validateTokenToDelete = (req, res, next) => validateToken(req, res)
+  || next();
 
 module.exports = {
   validateTalker,
